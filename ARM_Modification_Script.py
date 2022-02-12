@@ -8,6 +8,7 @@ PLAN_STATUS_TO_DROP = ['Discontinued', 'Terminated', 'Discontinuing', 'CC Pendin
 
 ## Import Modules
 from logging import raiseExceptions
+from multiprocessing.connection import wait
 import pandas as pd
 import mouse
 import keyboard
@@ -217,7 +218,11 @@ def mainMenu():
     print()
     print(Fore.WHITE + "Selecting options 1, 2, or 3 will result in further menu options.")
     print()
-    menuOption = int(input(Fore.WHITE + "Please make your selection: "))
+    menuOption = input(Fore.WHITE + "Please make your selection: ")
+    menuOptions = [1,2,3,4,5]
+    while menuOption in menuOptions == False:
+        print(Fore.RED + 'You need to select a valid menu option.' + Fore.WHITE)
+        menuOption = input(Fore.WHITE + "Please make your selection: ")
 
     if menuOption == 5:
         print(Fore.LIGHTBLUE_EX + "Goodbye!")
