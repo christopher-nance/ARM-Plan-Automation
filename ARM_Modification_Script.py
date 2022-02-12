@@ -133,10 +133,10 @@ buttonLocationsDictionary = {
 
 def lookup_customer(method, customerInformation): # Lookup Customers; return 0 (Good); return 1 (Error)
     if method == 'customerCode':
-        print("Looking up via customer code...")
+        print(Fore.WHITE + "Looking up via customer code...")
         mouse.move(buttonLocationsDictionary['LookupSearchNameX'], buttonLocationsDictionary['LookupSearchNameY'])
     elif method == 'searchName':
-        print("Looking up via search name...")
+        print(Fore.WHITE + "Looking up via search name...")
         mouse.move(buttonLocationsDictionary['LookupFastPassX'], buttonLocationsDictionary['LookupFastPassY'])
     else: return 1
 
@@ -160,7 +160,7 @@ def discontinueCurrentCustomer(): # Assumes account open and prompts closed.
     return 0
 
 def terminateCurrentCustomer():
-    print("Terminating with refund.")
+    print(Fore.WHITE + "Terminating with refund.")
     mouse.move(buttonLocationsDictionary['TerminateX'], buttonLocationsDictionary['TerminateY'])
     mouse.click('left')
     mouse.move(buttonLocationsDictionary['ARMCCTenderX'], buttonLocationsDictionary['ARMCCTenderY'])
