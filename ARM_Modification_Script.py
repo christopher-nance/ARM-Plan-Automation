@@ -187,6 +187,19 @@ def openNewSale():
     mouse.move(buttonLocationsDictionary['ProFastPassX'], buttonLocationsDictionary['ProFastPassY'])
     mouse.click('left')
 
+def printCustomerSummary(customerName, customerCode, planName, planStatus, customerCC, monthlyCharge, originLocation):
+    customer_summary = [
+                [Fore.LIGHTCYAN_EX + "Customer Name", str(customerName)],
+                [Fore.LIGHTGREEN_EX + "Customer Code", str(customerCode)],
+                [Fore.WHITE + "Plan Name", Fore.WHITE + str(planName) + " @ $" + str(monthlyCharge) + "/month"],
+                [Fore.WHITE + "Plan Status", Fore.WHITE + str(planStatus)],
+                [Fore.WHITE + "Credit Card",  Fore.WHITE + str(customerCC)],
+                [Fore.WHITE + "Origin Location", Fore.WHITE + str(originLocation)],
+            ]
+    print(Fore.LIGHTBLACK_EX + "="*56)
+    for item in customer_summary: print("{: <20}{: >30}".format(*item))
+    print(Fore.LIGHTBLACK_EX + "="*56)
+
 
 ############################################################################################################################################################################
 
@@ -242,7 +255,6 @@ def mainMenu():
         print(Fore.LIGHTGREEN_EX, "Looks like you're in good shape.\n", Fore.RESET)
         input("Press ENTER to start the script...\n")
         
-        print(Fore.LIGHTYELLOW_EX + "SWITCHING CUSTOMER: " + Fore.WHITE)
         for idx, row in cust_df.iterrows():
             customerName = row['CustomerName']
             customerCode = row['CustomerCode']
@@ -252,11 +264,13 @@ def mainMenu():
             monthlyCharge = row['LastDollars']
             originLocation = row['PlanSoldAt']
             
-            lookup_customer('customerCode', customerCode)
-            if passToSwitchTo[1] == 's': switchCurrentCustomer('StarterFastPass')
-            if passToSwitchTo[1] == 'p': switchCurrentCustomer('ProFastPass')
-            if passToSwitchTo[1] == 'l': switchCurrentCustomer('LegendFastPass')
-            openNewSale()
+            lookup_customer('customerCode', customerCode) # Lookup the customer
+            print(Fore.LIGHTYELLOW_EX + "SWITCHING CUSTOMER: " + Fore.WHITE)
+            printCustomerSummary(customerName, customerCode, planName, planStatus, customerCC, monthlyCharge, originLocation)
+            if passToSwitchTo[1] == 's': switchCurrentCustomer('StarterFastPass') # Switch customer: Starter Pass
+            if passToSwitchTo[1] == 'p': switchCurrentCustomer('ProFastPass') # Switch customer: Pro Pass
+            if passToSwitchTo[1] == 'l': switchCurrentCustomer('LegendFastPass') # Switch customer: Legend Pass
+            openNewSale() # Open a new sale
             time.sleep(0.1)
         
         print("Done switching customer's plans!\nA new CSV file needs to be created in order for the changes to be refelcted in this script.")
@@ -273,22 +287,12 @@ def mainMenu():
             monthlyCharge = row['LastDollars']
             originLocation = row['PlanSoldAt']
 
+            lookup_customer('customerCode', customerCode) # Lookup the customer
             print(Fore.LIGHTRED_EX + "TERMINATING CUSTOMER: " + Fore.WHITE)
-            lookup_customer('customerCode', customerCode)
-            customer_summary = [
-                        [Fore.LIGHTCYAN_EX + "Customer Name", str(customerName)],
-                        [Fore.LIGHTGREEN_EX + "Customer Code", str(customerCode)],
-                        [Fore.WHITE + "Plan Name", Fore.WHITE + str(planName) + " @ $" + str(monthlyCharge) + "/month"],
-                        [Fore.WHITE + "Plan Status", Fore.WHITE + str(planStatus)],
-                        [Fore.WHITE + "Credit Card",  Fore.WHITE + str(customerCC)],
-                        [Fore.WHITE + "Origin Location", Fore.WHITE + str(originLocation)],
-                    ]
-            print(Fore.LIGHTBLACK_EX + "="*56)
-            for item in customer_summary: print("{: <20}{: >30}".format(*item))
-            print(Fore.LIGHTBLACK_EX + "="*56)    
-            terminateCurrentCustomer()
+            printCustomerSummary(customerName, customerCode, planName, planStatus, customerCC, monthlyCharge, originLocation)    
+            terminateCurrentCustomer() # Terminate the customer
             time.sleep(0.1)
-            openNewSale()
+            openNewSale() # Open a new sale
 
         time.sleep(6)
         mainMenu()
@@ -304,22 +308,12 @@ def mainMenu():
             monthlyCharge = row['LastDollars']
             originLocation = row['PlanSoldAt']
             
+            lookup_customer('customerCode', customerCode) # Lookup the customer
             print(Fore.LIGHTRED_EX + "DISCONTINUING CUSTOMER: " + Fore.WHITE)
-            lookup_customer('customerCode', customerCode)
-            customer_summary = [
-                        [Fore.LIGHTCYAN_EX + "Customer Name", str(customerName)],
-                        [Fore.LIGHTGREEN_EX + "Customer Code", str(customerCode)],
-                        [Fore.WHITE + "Plan Name", Fore.WHITE + str(planName) + " @ $" + str(monthlyCharge) + "/month"],
-                        [Fore.WHITE + "Plan Status", Fore.WHITE + str(planStatus)],
-                        [Fore.WHITE + "Credit Card",  Fore.WHITE + str(customerCC)],
-                        [Fore.WHITE + "Origin Location", Fore.WHITE + str(originLocation)],
-                    ]
-            print(Fore.LIGHTBLACK_EX + "="*56)
-            for item in customer_summary: print("{: <20}{: >30}".format(*item))
-            print(Fore.LIGHTBLACK_EX + "="*56)    
-            terminateCurrentCustomer()
+            printCustomerSummary(customerName, customerCode, planName, planStatus, customerCC, monthlyCharge, originLocation)    
+            discontinueCurrentCustomer() # Discontinue the Customer
             time.sleep(0.1)
-            openNewSale()
+            openNewSale() # Open a new Sale
 
         time.sleep(6)
         mainMenu()
