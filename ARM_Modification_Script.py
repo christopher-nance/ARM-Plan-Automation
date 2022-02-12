@@ -84,42 +84,42 @@ print()
 # Button Location (X,Y) Dictionary
 buttonLocationsDictionary = {
     # Lookup: Customer Code (FastPass Number)
-    'LookupFastPassX': 100,
-    'LookupFastPassY': 100,
+    'LookupFastPassX': 1312,
+    'LookupFastPassY': 389,
     # Lookup: Customer Search Name (LastName,FirstName)
-    'LookupSearchNameX': 100,
-    'LookupSearchNameY': 100,
+    'LookupSearchNameX': 1314,
+    'LookupSearchNameY': 344,
 
     # Discontinue
-    'DiscontinueX': 100,
-    'DiscontinueY': 100,
+    'DiscontinueX': 1415,
+    'DiscontinueY': 853,
     # Terminate
-    'TerminateX': 100,
-    'TerminateY': 100,
+    'TerminateX': 1412,
+    'TerminateY': 801,
     # Switch
-    'SwitchX': 100,
-    'SwitchY': 100,
+    'SwitchX': 1408,
+    'SwitchY': 742,
     
     # Starter FastPass
-    'StarterFastPassX': 100,
-    'StarterFastPassY': 100,
+    'StarterFastPassX': 1415,
+    'StarterFastPassY': 396,
     # Pro FastPass
-    'ProFastPassX': 100,
-    'ProFastPassY': 100,
+    'ProFastPassX': 1418,
+    'ProFastPassY': 444,
     # Legend FastPass
-    'LegendFastPassX': 100,
-    'LegendFastPassY': 100,
+    'LegendFastPassX': 1416,
+    'LegendFastPassY': 493,
 
     # Cash ($0) Tender
-    'CashTenderX': 100,
-    'CashTenderY': 100,
+    'CashTenderX': 1416,
+    'CashTenderY': 648,
     # ARM CC Tender
-    'ARMCCTenderX': 100,
-    'ARMCCTenderY': 100,
+    'ARMCCTenderX': 1416,
+    'ARMCCTenderY': 595,
     
     # Open New Sale
-    'OpenNewSaleX': 100,
-    'OpenNewSaleY': 100,
+    'OpenNewSaleX': 885,
+    'OpenNewSaleY': 897,
 
     # Std. Cust. Promo pkg. Added Prompt
     'PromoPkgX': 100,
@@ -336,7 +336,10 @@ exit()
 
 
 '''
->> Add option to iterate through a decide per person to switch or terminate etc.
+>> Need to add x,y for std promo pkg prompt
+    >> OR probably use enter on keyboard to eliminate prompt.
+
+>> Maybe use short cuts on the python tab for keyboard to better code in the future.
 
 
 
