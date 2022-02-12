@@ -29,7 +29,7 @@ print(Fore.LIGHTMAGENTA_EX + '*********************************************' + F
 print('\n'*2)
 
 print(Fore.LIGHTYELLOW_EX + "[INFO]: Before proceeding, please input the path to your Customer List CSV File.", Fore.RESET)
-customerListCSV_path = input("Customer List Path: ")
+customerListCSV_path = input(Fore.WHITE + "Customer List Path: ")
 #customerListCSV_path = int(input("Employee ID: "))
 #customerListCSV_path = int(input("Employee Password: "))
 
@@ -46,12 +46,12 @@ while os.path.splitext(r'' + customerListCSV_path)[1].lower() != '.csv': # Check
 
 
 ## Import CSV Customer Data File
-print(Fore.LIGHTYELLOW_EX + "[INFO]: Importing customer list...", Fore.RESET)
+print(Fore.WHITE + "[INFO]: Importing customer list...", Fore.RESET)
 cust_df = pd.read_csv(customerListCSV_path, header=0)
 time.sleep(1)
 
 ## CSV Content Validation
-print(Fore.LIGHTYELLOW_EX + "[INFO]: Validating CSV data & dropping null (missing) values...", Fore.RESET)
+print(Fore.WHITE + "[INFO]: Validating CSV data & dropping null (missing) values...", Fore.RESET)
 removedValues = 0
 peopleRemoved = [['NON-MODIFIED FASTPASS PLANS']]
 peopleRemoved.append(['Customer Name (Last Name,FirstName)', 'Customer Code', 'Plan Status', 'Plan Name'])
@@ -72,8 +72,8 @@ for idx, row in cust_df.iterrows():
 pd.DataFrame(peopleRemoved).to_csv(r'C:\NCWAutomation\Output\Discontinue\PlansThatWereNotDiscontinued.csv') # Export the 'bad' customer list to ..\Output\Discontined.
 cust_df = cust_df.dropna() # Drop null values.
 
-print(Fore.LIGHTYELLOW_EX + "[INFO]: In total,", str(removedValues), "people have been unmodified.")
-print(Fore.LIGHTYELLOW_EX + r"[INFO]: To view a complete list of untouched FastPasses, go to C:\NCWAutomation\Output\Discontinue\PlansThatWereNotDiscontinued.csv")
+print(Fore.WHITE + "[INFO]: In total,", Fore.RED + str(removedValues) + Fore.WHITE + "people have been unmodified.")
+print(Fore.LIGHTBLACK_EX + r"[INFO]: To view a complete list of untouched FastPasses, go to C:\NCWAutomation\Output\Discontinue\PlansThatWereNotDiscontinued.csv")
 print()
 print()
 
@@ -205,19 +205,19 @@ def printCustomerSummary(customerName, customerCode, planName, planStatus, custo
 
 
 def mainMenu():
-    print("="*10)
-    print("Main Menu")
-    print("="*10)
-    print("1.) Discontinue FastPasses...")
-    print("2.) Terminate FastPasses...")
-    print("3.) Switch FastPasses...")
-    print("4.) Compile Customer Information Summary")
+    print("\n"*2)
+    print(Fore.WHITE + "Main Menu")
+    print(Fore.WHITE + "="*25)
+    print(Fore.BLUE + "1.) Discontinue FastPasses...")
+    print(Fore.YELLOW + "2.) Terminate FastPasses...")
+    print(Fore.RED + "3.) Switch FastPasses...")
+    print(Fore.MAGENTA + "4.) Compile Customer Information Summary")
     print()
-    print("5.) Exit this CLI")
+    print(Fore.WHITE + "5.) Exit this CLI")
     print()
-    print("Selecting options 1, 2, or 3 will result in further menu options.")
+    print(Fore.WHITE + "Selecting options 1, 2, or 3 will result in further menu options.")
     print()
-    menuOption = int(input("Please make your selection: "))
+    menuOption = int(input(Fore.WHITE + "Please make your selection: "))
 
     if menuOption == 5:
         print(Fore.LIGHTBLUE_EX + "Goodbye!")
@@ -243,17 +243,17 @@ def mainMenu():
             print(Fore.LIGHTBLACK_EX + "="*56)
             for item in customer_summary: print("{: <20}{: >30}".format(*item))
             print(Fore.LIGHTBLACK_EX + "="*56)
-            input('Press ENTER to continue...')
-        input("List complete. Press ENTER to go back to the Main Menu.")
+            input(Fore.WHITE + 'Press ENTER to continue...')
+        input(Fore.WHITE + "List complete. Press ENTER to go back to the Main Menu.")
         mainMenu()
     elif menuOption == 3:
         print('\n'*3)
-        passToSwitchTo = input("Which FastPass are ee switching to? (S)tarter, (P)ro or (L)egend: ")
+        passToSwitchTo = input(Fore.WHITE + "Which FastPass are ee switching to? (S)tarter, (P)ro or (L)egend: ")
         while passToSwitchTo[1].lower() != 's' or passToSwitchTo[1].lower() != 'p' or passToSwitchTo[1].lower() != 'l':
-            print("Oops, you need to type 's' for the starter fastpass, 'p' for the pro fastpass or 'l' for the legend fastpass.")
-            passToSwitchTo = input("Which FastPass are ee switching to? (S)tarter, (P)ro or (L)egend: ")
+            print(Fore.RED + "Oops, you need to type 's' for the starter fastpass, 'p' for the pro fastpass or 'l' for the legend fastpass.")
+            passToSwitchTo = input(Fore.WHITE + "Which FastPass are ee switching to? (S)tarter, (P)ro or (L)egend: ")
         print(Fore.LIGHTGREEN_EX, "Looks like you're in good shape.\n", Fore.RESET)
-        input("Press ENTER to start the script...\n")
+        input(Fore.WHITE + "Press ENTER to start the script...\n")
         
         for idx, row in cust_df.iterrows():
             customerName = row['CustomerName']
@@ -273,7 +273,7 @@ def mainMenu():
             openNewSale() # Open a new sale
             time.sleep(0.1)
         
-        print("Done switching customer's plans!\nA new CSV file needs to be created in order for the changes to be refelcted in this script.")
+        print(Fore.WHITE + "Done switching customer's plans!\nA new CSV file needs to be created in order for the changes to be refelcted in this script.")
         time.sleep(6)
         mainMenu()
     elif menuOption == 2:
@@ -318,7 +318,7 @@ def mainMenu():
         time.sleep(6)
         mainMenu()
     else:
-        print("That was not a valid menu option. Please choose a different option.")
+        print(Fore.RED + "That was not a valid menu option. Please choose a different option.")
         time.sleep(3)
         mainMenu()
 
