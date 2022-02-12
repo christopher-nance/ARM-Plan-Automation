@@ -1,6 +1,6 @@
 # Chris Nance
 # Mass ARM Plan Modification Script
-# Version 2.0
+# Version 1.0
 
 ## Constants
 PLAN_STATUS_TO_DROP = ['Discontinued', 'Terminated', 'Discontinuing', 'CC Pending', 'CC Declined', 'CC Expired', 'CC Unpaid', 'Rchrg Error'] # Avoid these ARM Accts.
