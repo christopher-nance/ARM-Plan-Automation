@@ -44,6 +44,7 @@ Ensure that you have the proper keybindings setup in SiteManager first! Either c
 * [Mouse](https://pypi.org/project/mouse/)
 * [Keyboard](https://pypi.org/project/keyboard/)
 * [Clipboard](https://pypi.org/project/clipboard/)
+
 These can all be installed using the pip command: 
 ~~~
 pip install keyboard mouse pandas colorama clipboard
