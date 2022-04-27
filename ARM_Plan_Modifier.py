@@ -22,11 +22,21 @@ for num in range(1,100): print('\n')
 sg.PopupOK("Instructions", "Please have a CSV (Comma Seperated) File ready to go containing a header called CustomerCode and a list of FastPass Numbers under it. Each cell should contain only one singluar FastPass Code.\n\nDo not use a Microsoft Excel (.xslx) sheet.\n\nSave a DRB Customer Analysis report to a text file and then copy the entire text file to the first cell of the spreadsheet in Excel. The other cells will populate accordingly, and then save as a CSV (comma seperated) file.\n\nCall Chris (630) 995-6758 if there are any issues.")
 
 numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
-notProcessed = []
+notProcessed = ['W-ajskdha', 'W-sakjdahs']
 numberOfCustomersInFile = 0
 processing = False
 
 time_per_customer = 6.7
+
+def notProcessedWindow():
+    sg.theme('Topanga')
+
+    elements = [
+        [sg.Text('The following customer codes were not processed:'), sg.OK()],
+        [sg.Multiline(size=(15,100))],
+    ]
+
+    return sg.Window('Customer Codes Not Processed', elements, size=(25,125))
 
 def createWindow():
     sg.theme('Topanga')
@@ -77,11 +87,10 @@ window = createSecondWindow()
 while True:
     event, values = window.read()
     if event == sg.WIN_CLOSED or event=="Exit":
-        print("The following customer codes were not processed...\n", notProcessed)
         exit()
     elif event == "Submit" and processing != True and values['menuofstuff'] == 'Enable 1-Time Message':
         processing = True
-        print(Fore.LIGHTYELLOW_EX + 'Starting script... Please click on the Python tab and keep the Terminal Controller in-focus.')
+        sg.PopupOK('Ready To Go', 'Press OK and then bring the Terminal Controller app into focus.\n\nClick on the console window and spam Ctrl+C To cancel the script.\n\nYou will have 5 seconds after you press OK to have terminal controller open and the Python tab in focus.')
         sleep(5)
         for index, row in dataframe.iterrows():
             tc.openNewSale()
@@ -99,7 +108,6 @@ while True:
                 notProcessed.append(customerCode)
 
             sleep(1)
-        print(Fore.LIGHTYELLOW_EX + 'Script has completed. Press any key to close this window.' + Fore.RESET)
         sg.PopupOK('Complete', 'The script is complete. It is recommended that additional reports are run to verify no customers were skipped during this process.')
         processing = False
         exit()
