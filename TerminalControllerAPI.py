@@ -72,13 +72,13 @@ def convertFPN(FPN):
 
 def validate_input(file):
     try:
-        return pd.read_csv(file)
+        return [True, pd.read_csv(file)]
     except UnicodeDecodeError:
-        return False
+        return [False, None]
     except FileNotFoundError:
-        return False
+        return [False, None]
     except Exception:
-        return False
+        return [False, None]
 
 def openNewSale():
     keyboard.press(keystrokeDictionary['OpenNewSale'][0])

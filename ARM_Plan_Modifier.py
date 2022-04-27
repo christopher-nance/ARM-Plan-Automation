@@ -57,14 +57,17 @@ while True:
         exit()
     elif event == "Submit":
         print(values["CSV_IN"])
-        dataframe = tc.validate_input(values['CSV_IN'])
-        if dataframe.empty == False:
-            print()
-            window['info'].update('FILE HAS BEEN VALIDATED')
-            numberOfCustomersInFile = len(dataframe.index)
-            break
-        else:
-            print('nope')
+        dataframeValid, dataframe = tc.validate_input(values['CSV_IN'])
+        if dataframeValid == True:
+            if dataframe.empty == False:
+                print()
+                window['info'].update('FILE HAS BEEN VALIDATED')
+                numberOfCustomersInFile = len(dataframe.index)
+                break
+            else:
+                print('Dataframe was returned empty...')
+        else: 
+            print("No dataframe was returned... So bad file or no file.")
 
 window.close()
 window = createSecondWindow()
@@ -72,7 +75,7 @@ window = createSecondWindow()
 while True:
     event, values = window.read()
     if event == sg.WIN_CLOSED or event=="Exit":
-        print("The following customer codes were not processed...\n" + notProcessed)
+        print("The following customer codes were not processed...\n", notProcessed)
         exit()
     elif event == "Submit" and processing != True and values['menuofstuff'] == 'Enable 1-Time Message':
         processing = True
