@@ -27,8 +27,6 @@ keystrokeDictionary = {
     '2022 Python Screen' is properly setup and if any changes need to be made they shopuld
     be done in this script, NOT in SiteManager. 
 
-    To read this dictionary simply do the following: 
-    hotkey_for_lite_wash_fastpass = keystrokeDictionary['FastPass_Lite']
     '''
 
 
@@ -58,6 +56,15 @@ keystrokeDictionary = {
 
 }
 
+def ETA(total_passes, progress, time_per_customer):
+    seconds = ((total_passes-progress)*time_per_customer) % (24 * 3600)
+    hour = seconds // 3600
+    seconds %= 3600
+    minutes = seconds // 60
+    seconds %= 60
+      
+    return "%d Hours %02d Minutes %02d Seconds" % (hour, minutes, seconds)
+    
 def convertFPN(FPN):
     splitStr = FPN.split('+')
     if len(splitStr) == 2:
