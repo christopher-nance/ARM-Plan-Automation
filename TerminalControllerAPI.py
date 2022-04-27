@@ -6,12 +6,10 @@ author              :Chris Nance
 date                :2022-04-17
 version             :1.0
 usage               :python TerminalControllerAPI.py
-notes               :do not pass arguments; script will open a GUI. Do not distribute.
-                    :relies on modules: mouse, keyboard, colorama
+notes               :visit https://github.com/christopher-nance/ARM-Plan-Automation
 python_version      :3.10
 #========================================================================================#
 '''
-
 
 import mouse, keyboard
 from colorama import Fore, init
@@ -112,7 +110,7 @@ def lookupAccount(customerCode):
         keyboard.press_and_release('menu')
         for i in range(0,4):
             keyboard.press_and_release('down')
-            sleep(0.5)
+            sleep(0.3)
         for i in range(0,5):
             keyboard.press_and_release('enter')
             sleep(0.5)
@@ -128,6 +126,7 @@ def enableOneTimeMessage(customerCode):
     keyboard.press(keystrokeDictionary['Tender_Cash'][0])
     keyboard.press(keystrokeDictionary['Tender_Cash'][1])
     print(Fore.GREEN + '[ENABLED]\t One-Time-Message for account with code:', customerCode + Fore.RESET)
+    sleep(0.5)
     openNewSale()
          
 
