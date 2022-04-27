@@ -67,7 +67,7 @@ while True:
             else:
                 print('Dataframe was returned empty...')
         else: 
-            print("No dataframe was returned... So bad file or no file.")
+            sg.popup_error("Input Validation Error", 'There is a problem with the CSV file you are uploading. Please ensure you follow these instructions for obtaining the properly formatted CSV file: \n1.) Save a list of ARM customers as a text document\n2.) In the text document, press Ctrl+A and then Ctrl+C to copy everything\n3.) In a blank excel sheet, click in the top left most cell and press Ctrl+V\n4.) Save this file as a comma seperated CSV file via Save As. DO NOT USE AN EXCEL FILE. ')
 
 window.close()
 window = createSecondWindow()
@@ -99,6 +99,7 @@ while True:
             sleep(1)
         print(Fore.LIGHTYELLOW_EX + 'Script has completed. Press any key to close this window.' + Fore.RESET)
         input()
+        processing = False
         exit()
     elif event == "Submit" and processing != True and values['menuofstuff'] == 'Discontinue':
         print(Fore.RED + "Not Supported." + Fore.RESET)

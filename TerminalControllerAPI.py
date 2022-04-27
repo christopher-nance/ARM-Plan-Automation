@@ -72,21 +72,30 @@ def convertFPN(FPN):
 
 def validate_input(file):
     try:
+        dataframe = pd.read_csv(file)
+        for index, row in dataframe.iterrows():
+            try:
+                customerCodeTest = row['CustomerCode']
+            except:
+                return [False, None]
         return [True, pd.read_csv(file)]
     except UnicodeDecodeError:
+        print("Validation error")
         return [False, None]
     except FileNotFoundError:
+        print("Validation error")
         return [False, None]
     except Exception:
+        print("Validation error")
         return [False, None]
 
 def openNewSale():
     keyboard.press(keystrokeDictionary['OpenNewSale'][0])
     keyboard.press(keystrokeDictionary['OpenNewSale'][1])
-    sleep(0.2)
+    sleep(0.5)
     keyboard.press(keystrokeDictionary['OpenNewSale'][0])
     keyboard.press(keystrokeDictionary['OpenNewSale'][1])
-    sleep(0.2)
+    sleep(0.5)
 
 def lookupAccount(customerCode):
     if customerCode == False:
@@ -96,26 +105,26 @@ def lookupAccount(customerCode):
         openNewSale()
         keyboard.press(keystrokeDictionary['FindAccount_FPcode'][0])
         keyboard.press(keystrokeDictionary['FindAccount_FPcode'][1])
-        sleep(0.2)
+        sleep(0.5)
         keyboard.release(keystrokeDictionary['FindAccount_FPcode'][0])
         keyboard.release(keystrokeDictionary['FindAccount_FPcode'][1])
         cb.copy(customerCode)
         keyboard.press_and_release('menu')
         for i in range(0,4):
             keyboard.press_and_release('down')
-            sleep(0.2)
+            sleep(0.5)
         for i in range(0,5):
             keyboard.press_and_release('enter')
-            sleep(0.3)
+            sleep(0.5)
 
 def enableOneTimeMessage(customerCode):
     print(Fore.YELLOW + '[PROCESSING]\t Enabling One-Time-Message for account with code:', customerCode + Fore.RESET)
     keyboard.press(keystrokeDictionary['OneTimeMsg_Enable'][0])
     keyboard.press(keystrokeDictionary['OneTimeMsg_Enable'][1])
-    sleep(0.2)
+    sleep(0.5)
     keyboard.press(keystrokeDictionary['OneTimeMsg_Enable'][0])
     keyboard.press(keystrokeDictionary['OneTimeMsg_Enable'][1])
-    sleep(0.2)
+    sleep(0.5)
     keyboard.press(keystrokeDictionary['Tender_Cash'][0])
     keyboard.press(keystrokeDictionary['Tender_Cash'][1])
     print(Fore.GREEN + '[ENABLED]\t One-Time-Message for account with code:', customerCode + Fore.RESET)
