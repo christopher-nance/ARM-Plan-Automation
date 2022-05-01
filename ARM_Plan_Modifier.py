@@ -102,7 +102,7 @@ while True:
 
             if customerCode[0] in numbers:
                 tc.lookupAccount(customerCode)
-                tc.enableOneTimeMessage(customerCode)
+                tc.enableOneTimeMessage()
             else:
                 print(Fore.RED + "[SKIPPING]\t Account with code:", str(customerCode) + Fore.RESET)
                 notProcessed.append(customerCode)
