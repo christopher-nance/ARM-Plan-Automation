@@ -1,15 +1,19 @@
 info = '''
 #========================================================================================#
-title               :TerminalControllerAPI.py
-description         :sends keystrokes/mouseclicks to the Terminal Controller
+title               :TerminalControllerAPI
+description         :Library for controlling Terminal Controller via python.
 author              :Chris Nance
-date                :2022-04-17
+date                :2022-05-01
 version             :1.0
-usage               :python TerminalControllerAPI.py
+usage               :import TerminalControllerAPI
 notes               :visit https://github.com/christopher-nance/ARM-Plan-Automation
 python_version      :3.10
 #========================================================================================#
 '''
+
+##############################################################
+################## MODULES & DICTIONARIES ####################
+##############################################################
 
 import mouse, keyboard
 from colorama import Fore, init
@@ -54,7 +58,14 @@ keystrokeDictionary = {
     'OpenNewSale':          ['Alt', 'q'], # Opens a new sale
     'ReleaseSale':          ['Alt', 'r'], # Releases the current sale
 
+    'ARMContract':          ['Alt', 's'], # Prints the ARM Contract for the current customer
+
 }
+
+
+##############################################################
+################### CONTROLLER  FUNCTIONS ####################
+##############################################################
 
 def ETA(total_passes, progress, time_per_customer):
     seconds = ((total_passes-progress)*time_per_customer) % (24 * 3600)
@@ -94,6 +105,37 @@ def validate_input(file):
         print("Validation error")
         return [False, None]
 
+
+
+##############################################################
+############# TERMINAL CONTROLLER API FUNCTIONS ##############
+##############################################################
+'''
+Instructions: 
+Import this module using: import TerminalControllerAPI
+After the module is imported you may use any of the following functions: 
+
+Name: openNewSale()
+Args: none
+Desc: Opens a new sale
+
+Name: lookupAccount(customerCode)
+Args: <str:customerCode - FastPass number to lookup> 
+Desc: Looks up the account associated with the FastPass number <customerCode> 
+
+Name: enableOneTimeMessage(customerCode)
+Args: Pass the same argument as you did for lookupAccount
+Desc: Turns on the one-time message club plan for the account that is looked up.
+
+Name: ETA(total_passes, progress, time_per_customer)
+Args: <num:total_passes total customers that will be iterated>; <num:progress number of customers already iterated through (usually the index)>; <num:time_per_customer amount of time per customer for each function>
+Desc: Turns on the one-time message club plan for the account that is looked up.
+
+
+
+
+'''
+
 def openNewSale():
     keyboard.press(keystrokeDictionary['OpenNewSale'][0])
     keyboard.press(keystrokeDictionary['OpenNewSale'][1])
@@ -122,8 +164,8 @@ def lookupAccount(customerCode):
             keyboard.press_and_release('enter')
             sleep(0.5)
 
-def enableOneTimeMessage(customerCode):
-    print(Fore.YELLOW + '[PROCESSING]\t Enabling One-Time-Message for account with code:', customerCode + Fore.RESET)
+def enableOneTimeMessage():
+    print(Fore.YELLOW + '[PROCESSING]\t Enabling One-Time-Message for account'+ Fore.RESET)
     keyboard.press(keystrokeDictionary['OneTimeMsg_Enable'][0])
     keyboard.press(keystrokeDictionary['OneTimeMsg_Enable'][1])
     sleep(0.5)
@@ -132,9 +174,22 @@ def enableOneTimeMessage(customerCode):
     sleep(0.5)
     keyboard.press(keystrokeDictionary['Tender_Cash'][0])
     keyboard.press(keystrokeDictionary['Tender_Cash'][1])
-    print(Fore.GREEN + '[ENABLED]\t One-Time-Message for account with code:', customerCode + Fore.RESET)
+    print(Fore.GREEN + '[ENABLED]\t One-Time-Message for account' + Fore.RESET)
     sleep(0.5)
     openNewSale()
-         
+
+def printARMContract():
+    print(Fore.YELLOW + '[DEMO][PROCESSING]\t Printing ARM Recharge Receipt for account' + Fore.RESET)
+    keyboard.press(keystrokeDictionary['ARMContract'][0])
+    keyboard.press(keystrokeDictionary['ARMContract'][1])
+    print(Fore.YELLOW + '[DEMO][COMPLETE]\t ARM Recharge Receipt PRINTED for account' + Fore.RESET)
+    openNewSale()
 
 
+
+
+# Copyright (c) Chris Nance 2022
+# Terminal Contoller, SiteWatch, TunnelWatch, and FastPass are trademarks of DRB Systems
+# Do Not Redistribute
+
+print(Fore.GREEN + 'TerminalControllerAPI Version 1.0 has loaded.' + Fore.RESET)

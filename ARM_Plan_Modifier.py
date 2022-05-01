@@ -50,7 +50,7 @@ def createWindow():
 
 def createSecondWindow():
     sg.theme('Topanga')
-    listElements = ['Discontinue', 'Terminate', 'Enable 1-Time Message', 'Disable 1-Time Message']
+    listElements = ['Discontinue', 'Terminate', 'Enable 1-Time Message', 'Disable 1-Time Message', 'Application DEMO']
     elements = [
         [sg.Text('What would you like to do?', key='info'), sg.DropDown(listElements, size=(20,50), key='menuofstuff')],
 
@@ -104,7 +104,7 @@ while True:
                 tc.lookupAccount(customerCode)
                 tc.enableOneTimeMessage(customerCode)
             else:
-                print(Fore.RED + "[SKIPPING]\t account with code:", str(customerCode) + Fore.RESET)
+                print(Fore.RED + "[SKIPPING]\t Account with code:", str(customerCode) + Fore.RESET)
                 notProcessed.append(customerCode)
 
             sleep(1)
@@ -113,6 +113,30 @@ while True:
         exit()
     elif event == "Submit" and processing != True and values['menuofstuff'] == 'Discontinue':
         sg.PopupError("Error", "Sorry, but the operation you selected is not yet supported.")
+    elif event == "Submit" and processing != True and values['menuofstuff'] == 'Application DEMO':
+        sg.PopupOK('Application DEMO', 'This demo will simply iterate through the list of customers, print their ARM Recharge Contract and then open a new sale.\n\nThis is used to demonstrate the capabilities and time it will take to process a customer list.')
+        processing = True
+        sg.PopupOK('Ready To Go', 'Press OK and then bring the Terminal Controller app into focus.\n\nClick on the console window and spam Ctrl+C To cancel the script.\n\nYou will have 5 seconds after you press OK to have terminal controller open and the Python tab in focus.')
+        sleep(5)
+        for index, row in dataframe.iterrows():
+            tc.openNewSale()
+
+            window['status'].update(('[DEMO] Modifying fastpass accounts...' + str(index) + '/' + str(numberOfCustomersInFile)) + ' | ETA: ' + tc.ETA(numberOfCustomersInFile, index, time_per_customer))
+            window['progress'].update(index)
+
+            customerCode = tc.convertFPN(row['CustomerCode'])
+
+            if customerCode[0] in numbers:
+                tc.lookupAccount(customerCode)
+                tc.printARMContract(customerCode)
+            else:
+                print(Fore.RED + "[SKIPPING]\t Account with code:", str(customerCode) + Fore.RESET)
+                notProcessed.append(customerCode)
+
+            sleep(1)
+        sg.PopupOK('Complete', 'The script is complete. It is recommended that additional reports are run to verify no customers were skipped during this process.')
+        processing = False
+        exit()
     else:
         sg.PopupError("Error", "Sorry, but the operation you selected is not yet supported.")
 
