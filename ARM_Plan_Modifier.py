@@ -118,6 +118,7 @@ while True:
         processing = True
         sg.PopupOK('Ready To Go', 'Press OK and then bring the Terminal Controller app into focus.\n\nClick on the console window and spam Ctrl+C To cancel the script.\n\nYou will have 5 seconds after you press OK to have terminal controller open and the Python tab in focus.')
         sleep(5)
+        acceptableStatusStr = ['Current', 'CC Expiring', 'CC Declined']
         for index, row in dataframe.iterrows():
             tc.openNewSale()
 
@@ -126,7 +127,7 @@ while True:
 
             customerCode = tc.convertFPN(row['CustomerCode'])
 
-            if customerCode[0] in numbers:
+            if customerCode[0] in numbers and row['StatusStr'] in acceptableStatusStr:
                 tc.lookupAccount(customerCode)
                 tc.printARMContract(customerCode)
             else:
