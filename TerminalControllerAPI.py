@@ -21,6 +21,10 @@ init(convert=True)
 import pandas as pd
 from time import sleep
 import clipboard as cb
+from PIL import Image, UnidentifiedImageError
+import pytesseract
+import re
+import os
 
 
 keystrokeDictionary = {
@@ -34,10 +38,10 @@ keystrokeDictionary = {
     '''
 
 
-    'FastPass_Lite':        ['Alt', 'a'], # Lite FastPass
-    'FastPass_Starter':     ['Alt', 'b'], # Starter FastPass
-    'FastPass_Pro':         ['Alt', 'c'], # Pro FastPass
-    'FastPass_Legend':      ['Alt', 'd'], # Legend FastPass
+    'FastPass_Express':     ['Alt', 'a'], # Lite FastPass
+    'FastPass_Clean':       ['Alt', 'b'], # Starter FastPass
+    'FastPass_Protect':     ['Alt', 'c'], # Pro FastPass
+    'FastPass_UShine':      ['Alt', 'd'], # Legend FastPass
 
     'FindAccount_Name':     ['Alt', 'e'], # Find Account with Search Name (Last,First)
     'FindAccount_FPcode':   ['Alt', 'f'], # Find Account with FastPass Number
@@ -60,6 +64,24 @@ keystrokeDictionary = {
 
     'ARMContract':          ['Alt', 's'], # Prints the ARM Contract for the current customer
 
+    'SwitchRechargeSite':   ['Alt', 't'],
+
+    'PAGE_Python':          ['Ctrl', 'Alt', 'c'], # Moves to the Python tab
+    'PAGE_History':         ['Ctrl', 'Alt', 'b'], # Moves to the History tab
+
+}
+
+locationDictionary = {
+    "wash*u - Plainfie":    "WSHUIL-001 - wash*u - Plainfield",
+    "wash*u - Villa Pa":    "WSHUIL-002 - wash*u - Villa Park",
+    "wash*u - Burbank":     "WSHUIL-003 - wash*u - Burbank",
+    "wash*u - Carol St":    "WSHUIL-004 - wash*u - Carol Stream",
+    "wash*u - Des Plai":    "WSHUIL-011 - wash*u - Des Plaines",
+    "wash*u - Berwyn":      "WSHUIL-007 - wash*u - Berwyn",
+    "wash*u - Joliet":      "WSHUIL-008 - wash*u - Joliet",
+    "wash*u - Napervil":    "WSHUIL-010 - wash*u - Naperville",
+    "wash*u - Evergree":    "WSHUIL-009 - wash*u - Evergreen",
+    "Query Server":         "WSHUIL-HQ2 - Query Server"
 }
 
 
@@ -104,6 +126,47 @@ def validate_input(file):
     except Exception:
         print("Validation error")
         return [False, None]
+
+def extract_location_from_image(path_to_image):
+    # Check if the file exists
+    if not os.path.exists(path_to_image):
+        print(f"Error: The file '{path_to_image}' does not exist.")
+        return None
+
+    try:
+        # Load the image using PIL
+        image = Image.open(path_to_image)
+
+        # Extract text from the image using pytesseract
+        extracted_text = pytesseract.image_to_string(image)
+
+        # Extract location from the text using regex matching
+        def extract_location(text, location_dict):
+            for key in location_dict.keys():
+                # Using regular expressions to match partial location names
+                pattern = re.escape(key)
+                match = re.search(pattern, text)
+                if match:
+                    return location_dict[key]
+            return None
+
+        # Find the location
+        location = extract_location(extracted_text, locationDictionary)
+
+        # Output the result
+        if location:
+            print(f"Location found: {location}")
+            return location
+        else:
+            print("Location not found in the extracted text.")
+            return None
+
+    except UnidentifiedImageError:
+        print(f"Error: The file '{path_to_image}' is not a valid image file or the format is unsupported.")
+    except pytesseract.TesseractError as e:
+        print(f"Error: Tesseract encountered an issue: {e}")
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
 
 
 
@@ -184,6 +247,34 @@ def printARMContract():
     keyboard.press(keystrokeDictionary['ARMContract'][1])
     print(Fore.YELLOW + '[DEMO][COMPLETE]\t ARM Recharge Receipt PRINTED for account' + Fore.RESET)
     openNewSale()
+
+def switchCustomerRechargeSite(newLocation):
+    if locationDictionary.get(newLocation, False) == False:
+        print(Fore.YELLOW + '[PROCESSING]\t Migrating customer to the specified location' + Fore.RESET)
+    else:
+        print(Fore.YELLOW + '[PROCESSING]\t Migrating customer to the specified location' + Fore.RESET)
+        keyboard.press(keystrokeDictionary['PAGE_History'])
+        ## CAPTURE PROPER IMAGE ##
+        ## DO IMAGE OCR ##
+        ## RETURN PROPER SITE CODE ##
+        sleep(0.2)
+        keyboard.press(keystrokeDictionary['SwitchRechargeSite'][0])
+        keyboard.press(keystrokeDictionary['SwitchRechargeSite'][1])
+        sleep(0.2)
+        keyboard.press('tab')
+        sleep(0.2)
+        cb.copy(locationDictionary[newLocation])
+        keyboard.press_and_release('menu')
+        for i in range(0,4):
+            keyboard.press_and_release('down')
+            sleep(0.3)
+        for i in range(0,5):
+            keyboard.press_and_release('enter')
+            sleep(0.5)
+        sleep(0.3)
+        keyboard.press_and_release("enter")
+        print(Fore.YELLOW + '[COMPLETE]\t Migration complete! Customer is now apart of {newLocation}' + Fore.RESET)
+        openNewSale()
 
 
 
